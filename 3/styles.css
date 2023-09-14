@@ -1,0 +1,62 @@
+body {
+    background-color: burlywood;
+}
+
+#main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px;
+    width: 100%;
+}
+
+#buttons-div {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.person-button {
+    width: 10%;
+    height: 50px;
+    font-size: 18px;
+}
+
+#add-person-button {
+    margin-right: 30px;
+}
+
+#data-div {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.person-div {
+    width: 15%;
+    border: 2px solid brown;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.person-info-div {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.person-info-div img {
+    width: 100%;
+}
+
+.person-info-div p {
+    margin: 5px 0px;
+}
