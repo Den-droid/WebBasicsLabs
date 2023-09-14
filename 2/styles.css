@@ -1,0 +1,69 @@
+#main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#form-validation-div, #table-events-div {
+    padding: 10px;
+    border: 3px solid black;
+    border-radius: 5px;
+}
+
+#form-validation-div {
+    width: 50%;
+    margin-top: 5px;
+    display: flex;
+}
+
+#form-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#form-content-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-input {
+    width: 60%;
+    height: 15px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#submit-button {
+    margin-top: 20px;
+    width: 60%;
+    padding: 10px;
+}
+
+#table-events-div {
+    width: 30%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#color-picker {
+    width: 100%;
+}
+
+#table {
+    margin-top: 10px;
+    width: 70%;
+    border-collapse: collapse;
+    height: 300px;
+}
+
+#table td{
+    border: 1px solid black;
+    text-align: center;
+}
