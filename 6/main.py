@@ -1,72 +1,49 @@
 import logging
 import sys
 import os
+from core.handlers import basic
+from core.handlers import films
+from core.handlers import people
+from core.handlers import planets
+from core.handlers import species
+from core.handlers import starships
+from core.handlers import vehicles
+from core.utils import commands
 
 from aiohttp import web
 
-from aiogram import Bot, Dispatcher, Router, types
+from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
-from aiogram.types import Message
-from aiogram.utils.markdown import hbold
+from aiogram.filters import Command, CommandStart
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 
-# Bot token can be obtained via https://t.me/BotFather
 TOKEN = os.environ['TG_TOKEN']
 
-# Webserver settings
-# bind localhost only to prevent any external access
 WEB_SERVER_HOST = "::"
-# Port for incoming request from reverse proxy. Should be any available port
 WEB_SERVER_PORT = 8350
 
-# Path to webhook route, on which Telegram will send requests
 WEBHOOK_PATH = ""
-# Base URL for webhook will be used to generate webhook URL for Telegram,
-# in this example it is used public DNS with HTTPS support
 BASE_WEBHOOK_URL = f'https://yaremchuk.alwaysdata.net/'
 
-# All handlers should be attached to the Router (or Dispatcher)
-router = Router()
-
-
-@router.message(CommandStart())
-async def command_start_handler(message: Message) -> None:
-    """
-    This handler receives messages with `/start` command
-    """
-    # Most event objects have aliases for API methods that can be called in events' context
-    # For example if you want to answer to incoming message you can use `message.answer(...)` alias
-    # and the target chat will be passed to :ref:`aiogram.methods.send_message.SendMessage`
-    # method automatically or call API method directly via
-    # Bot instance: `bot.send_message(chat_id=message.chat.id, ...)`
-    await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
-
-
-@router.message()
-async def echo_handler(message: types.Message) -> None:
-    await message.reply(message.text + '\nGood day!!!')
-
-
 async def on_startup(bot: Bot) -> None:
-    # If you have a self-signed SSL certificate, then you will need to send a public
-    # certificate to Telegram
     await bot.set_webhook(f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}")
+    await commands.set_commands(bot)
 
 
 def main() -> None:
-    # Dispatcher is a root router
     dp = Dispatcher()
-    # ... and all other routers should be attached to Dispatcher
-    dp.include_router(router)
 
-    # Register startup hook to initialize webhook
     dp.startup.register(on_startup)
-
-    # Initialize Bot instance with a default parse mode which will be passed to all API calls
+    dp.message.register(basic.command_start_handler, CommandStart())
+    dp.message.register(films.films_handler, Command(commands=['films']))
+    dp.message.register(people.people_handler, Command(commands=['people']))
+    dp.message.register(planets.planets_handler, Command(commands=['planets']))
+    dp.message.register(species.species_handler, Command(commands=['species']))
+    dp.message.register(starships.starships_handler, Command(commands=['starships']))
+    dp.message.register(vehicles.vehicles_handler, Command(commands=['vehicles']))
+    
     bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
 
-    # Create aiohttp.web.Application instance
     app = web.Application()
 
     # Create an instance of request handler,
@@ -82,7 +59,6 @@ def main() -> None:
     # Mount dispatcher startup and shutdown hooks to aiohttp application
     setup_application(app, dp, bot=bot)
 
-    # And finally start webserver
     web.run_app(app, host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
 
 
